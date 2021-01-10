@@ -11,7 +11,7 @@ import SwiftUI
 struct SolitareApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MenuView()
         }
     }
 }
