@@ -26,20 +26,55 @@ struct MenuView: View {
 
 struct GameView: View {
     // TODO: integrate solitare class
-    
+    @State var orientation = UIDevice.current.orientation
     @State var showingAlert = false
     @Environment(\.presentationMode) var presentation
-
+    
     init() { UITableView.appearance().backgroundColor = .clear }
     
+    // TODO: orientation publisher not working, card size not updating
+    // https://stackoverflow.com/a/62370919/14030916
+    let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
+            .makeConnectable()
+            .autoconnect()
+    
     var body: some View {
-        NavigationView {
-            Text("Game Board")
+        let screenHeight = UIScreen.main.bounds.height
+        let screenWidth = UIScreen.main.bounds.height
+        
+        let gridSize: CGFloat = 7
+        let gridHeight: CGFloat = screenHeight / gridSize
+        let gridWidth: CGFloat = screenWidth / gridSize
+        
+        let cardRatio: CGFloat = 1.4
+        let cardRatioReciprocal: CGFloat = 1 / cardRatio
+        
+        let cardHeight: CGFloat = orientation.isLandscape ?
+            gridWidth * cardRatio : //land
+            gridHeight // port
+        let cardWidth = orientation.isLandscape ?
+            gridWidth : // land
+            gridHeight * cardRatioReciprocal // port
+        
+        ZStack {
+            // https://bit.ly/3iLABs2
+            Rectangle()
+                .fill(Color.white)
+                .frame(width: cardWidth, height: cardHeight)
+                .border(Color.black, width: 1)
+            HStack {
+                Text("A[")
+                    .font(Font.custom("CardCharacters",
+                                      size: 20))
+                    .foregroundColor(.red)
+            }
         }
+        .frame(width: cardWidth, height: cardHeight)
+        .drawingGroup()
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(
             trailing: Button(action: { self.showingAlert = true },
-            label: { Image("Heart") }) // TODO: Replace with pause icon
+                             label: { Image("Heart") }) // TODO: Replace with pause icon
         ).actionSheet(isPresented: $showingAlert, content: {
                         ActionSheet(title: Text("Pause"),
                                     message: nil,
@@ -56,86 +91,6 @@ struct GameView: View {
     }
 }
 
-struct SettingsView: View {
-    // weird space on top of list caused by apple bug
-    // TODO: fix spacing when apple provides solution
-    // TODO: abstract info button to remove duplicate code
-    // TODO: replace text with info icon image
-    // TODO: convert version stepper to picker view
-    
-    @State var drawCount = 1
-    @State var passAllowance = 2
-    @State var enablePassing = true
-    @State var showingAlert = false
-    @State var version = 0
-    
-    init() { UITableView.appearance().backgroundColor = .clear }
-    
-    var body: some View {
-        List {
-            Section(header: Text("Game Type")) {
-                HStack {
-                    // Stepper(value: $version, in: 0...Solitare.Version.allCases.count, step: 0) {
-                    // Text(Solitare.Version.allCases[version].rawValue)
-                    // }
-                    Text(Solitare.Version.allCases[version].rawValue)
-                    Spacer()
-                    Button(action: { self.showingAlert = true },
-                           label: {
-                            Text("Info Button")
-                           }).alert(isPresented: $showingAlert, content: {
-                            Alert(title: Text("Title"),
-                                  message: Text("message"),
-                                  dismissButton: .cancel())
-                           })
-                }
-            }
-            
-            Section(header: Text("Game Settings")) {
-                HStack {
-                    Toggle("Enable Passing", isOn: $enablePassing)
-                    Button(action: { self.showingAlert = true },
-                           label: { Text("Info Button") }
-                    ).alert(isPresented: $showingAlert, content: {
-                                Alert(title: Text("Title"),
-                                      message: Text("message"),
-                                      dismissButton: .cancel())})
-                }
-                
-                if enablePassing {
-                    HStack {
-                        Stepper(value: $drawCount, in: 1...3, step: 2) {
-                            Text("Draw \(drawCount)")
-                        }
-                        Button(action: { self.showingAlert = true },
-                               label: { Text("Info Button") }
-                        ).alert(isPresented: $showingAlert, content: {
-                                    Alert(title: Text("Title"),
-                                          message: Text("message"),
-                                          dismissButton: .cancel())})
-                    }
-                    HStack {
-                        Stepper(value: $passAllowance, in: 0...2, step: 1) {
-                            let plural = passAllowance == 0 ? "" : "s"
-                            Text("Pass \(Solitare.PassAllowance.allCases[passAllowance].rawValue) time\(plural)")
-                        }
-                        Button(action: { self.showingAlert = true },
-                               label: {
-                                Text("Info Button")
-                               }).alert(isPresented: $showingAlert, content: {
-                                Alert(title: Text("Title"),
-                                      message: Text("message"),
-                                      dismissButton: .cancel())
-                               })
-                    }
-                }
-            }
-            Section(header: Text("Licenses")) {
-                Text("Playing Cards by Vadim Solomakhin from the Noun Project")
-            }
-        }.listStyle(GroupedListStyle())
-    }
-}
 
 // TODO:
 // tableau must alternate when stacking
@@ -199,8 +154,8 @@ class Solitare {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
-        MenuView()
         GameView()
+        //SettingsView()
+        //MenuView()
     }
 }
