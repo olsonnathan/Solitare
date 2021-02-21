@@ -83,7 +83,9 @@ struct SettingsView: View {
                 Text("Icons: Playing Cards by Vadim Solomakhin from the Noun Project")
                 Text("Fonts: CARD CHARACTERS computer font v1.1 ©2003, 2009 Harold Lohner HLohner@aol.com http://www.haroldsfonts.com")
             }
-        }.listStyle(GroupedListStyle())
+        }
+        .listStyle(GroupedListStyle())
+        .navigationBarTitle("Settings", displayMode: .inline)
     }
 }
 

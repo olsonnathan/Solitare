@@ -25,9 +25,10 @@ struct MenuView: View {
 }
 
 struct GameView: View {
-    // TODO: integrate solitare class
-    @State var orientation = UIDevice.current.orientation
     @State var showingAlert = false
+    @State var selectedCard: String?
+    @ObservedObject var viewState = ViewState()
+    @ObservedObject var solitare = Solitare()
     @Environment(\.presentationMode) var presentation
     
     init() { UITableView.appearance().backgroundColor = .clear }
@@ -35,8 +36,8 @@ struct GameView: View {
     // TODO: orientation publisher not working, card size not updating
     // https://stackoverflow.com/a/62370919/14030916
     let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
-            .makeConnectable()
-            .autoconnect()
+        .makeConnectable()
+        .autoconnect()
     
     var body: some View {
         let screenHeight = UIScreen.main.bounds.height
@@ -49,10 +50,10 @@ struct GameView: View {
         let cardRatio: CGFloat = 1.4
         let cardRatioReciprocal: CGFloat = 1 / cardRatio
         
-        let cardHeight: CGFloat = orientation.isLandscape ?
+        let cardHeight: CGFloat = viewState.orientation.isLandscape ?
             gridWidth * cardRatio : //land
             gridHeight // port
-        let cardWidth = orientation.isLandscape ?
+        let cardWidth = viewState.orientation.isLandscape ?
             gridWidth : // land
             gridHeight * cardRatioReciprocal // port
         
@@ -69,12 +70,16 @@ struct GameView: View {
                     .foregroundColor(.red)
             }
         }
+        .onDrag({ () -> NSItemProvider in
+            selectedCard = "A["
+            return NSItemProvider(item: nil, typeIdentifier: nil)
+        })
         .frame(width: cardWidth, height: cardHeight)
         .drawingGroup()
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(
             trailing: Button(action: { self.showingAlert = true },
-                             label: { Image("Heart") }) // TODO: Replace with pause icon
+                             label: { Image(systemName: "pause") })
         ).actionSheet(isPresented: $showingAlert, content: {
                         ActionSheet(title: Text("Pause"),
                                     message: nil,
@@ -83,22 +88,22 @@ struct GameView: View {
                                          .default(Text("Save"),
                                                   action: { print("TODO") }),
                                          .destructive(Text("Quit"),
-                                                      action: { self.presentation.wrappedValue.dismiss()
-                                                      }
+                                                      action: { self.presentation.wrappedValue.dismiss() }
                                          )]
                         )}
         )
     }
 }
 
+class ViewState: ObservableObject {
+    var orientation = UIDevice.current.orientation
+}
 
 // TODO:
 // tableau must alternate when stacking
-// card needs a rectangle
-// card needs to be draggable
 // card needs to snap to tableau
 
-class Solitare {
+class Solitare: ObservableObject {
     var stock = [Card]()
     var waste = [Card]()
     var tableaus = [[Card]]()
@@ -126,7 +131,7 @@ class Solitare {
         //print(tableaus)
     }
     
-    func buildStock() {
+    private func buildStock() {
         for rank in Card.Rank.allCases {
             for suit in Card.Suit.allCases {
                 let card = Card(suit: suit,
@@ -137,7 +142,7 @@ class Solitare {
         }
     }
     
-    func buildTableaus() {
+    private func buildTableaus() {
         for tableau in 0...6 {
             var pile = [Card]()
             for _ in 0...tableau {
