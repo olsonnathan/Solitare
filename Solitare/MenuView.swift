@@ -124,7 +124,7 @@ class Solitare: ObservableObject {
         stock = []
         tableaus = []
         waste = []
-        
+         
         buildStock()
         //print(stock)
         buildTableaus()
