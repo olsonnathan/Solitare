@@ -119,7 +119,7 @@ class Solitare {
         stock = []
         tableaus = []
         waste = []
-         
+        
         buildStock()
         //print(stock)
         buildTableaus()
