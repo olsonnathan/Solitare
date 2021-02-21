@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		E40513A225BE6AA6001C90C3 /* CardCharacters.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E40513A125BE6AA6001C90C3 /* CardCharacters.ttf */; };
 		E43E8A3725BE4C790029A62E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43E8A3625BE4C790029A62E /* SettingsView.swift */; };
-		E4BFC1CC25E1E3E70028CEAF /* TableauView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BFC1CB25E1E3E70028CEAF /* TableauView.swift */; };
 		E4D27B5425A93BFB000408E7 /* SolitareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D27B5325A93BFB000408E7 /* SolitareApp.swift */; };
 		E4D27B5625A93BFB000408E7 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D27B5525A93BFB000408E7 /* MenuView.swift */; };
 		E4D27B5825A93BFC000408E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4D27B5725A93BFC000408E7 /* Assets.xcassets */; };
@@ -20,7 +19,6 @@
 /* Begin PBXFileReference section */
 		E40513A125BE6AA6001C90C3 /* CardCharacters.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CardCharacters.ttf; sourceTree = "<group>"; };
 		E43E8A3625BE4C790029A62E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		E4BFC1CB25E1E3E70028CEAF /* TableauView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableauView.swift; sourceTree = "<group>"; };
 		E4D27B5025A93BFA000408E7 /* Solitare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solitare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4D27B5325A93BFB000408E7 /* SolitareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolitareApp.swift; sourceTree = "<group>"; };
 		E4D27B5525A93BFB000408E7 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
@@ -68,7 +66,6 @@
 				E4D27B5325A93BFB000408E7 /* SolitareApp.swift */,
 				E4D27B5725A93BFC000408E7 /* Assets.xcassets */,
 				E4D27B5925A93BFC000408E7 /* Preview Content */,
-				E4BFC1CB25E1E3E70028CEAF /* TableauView.swift */,
 			);
 			path = Solitare;
 			sourceTree = "<group>";
@@ -154,7 +151,6 @@
 				E4D27B5625A93BFB000408E7 /* MenuView.swift in Sources */,
 				E43E8A3725BE4C790029A62E /* SettingsView.swift in Sources */,
 				E4D27B6425A93F50000408E7 /* Card.swift in Sources */,
-				E4BFC1CC25E1E3E70028CEAF /* TableauView.swift in Sources */,
 				E4D27B5425A93BFB000408E7 /* SolitareApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
